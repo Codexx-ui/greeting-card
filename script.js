@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnToCard2 = document.getElementById('btn-to-card-2');
     const btnToCard3 = document.getElementById('btn-to-card-3');
     const btnToCard4 = document.getElementById('btn-to-card-4');
+    const btnToCard5 = document.getElementById('btn-to-card-5');
     const btnRestart = document.getElementById('btn-restart');
 
     // Smooth navigation helper
@@ -22,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
             targetCard.classList.add('active');
             
             // Trigger specific animations or canvas loaders
-            if (cardIndex === 4) {
+            if (cardIndex === 5) {
                 startFireworks();
             } else {
                 stopFireworks();
@@ -37,6 +38,11 @@ document.addEventListener('DOMContentLoaded', () => {
             showCard(4);
         }
     });
+    btnToCard5.addEventListener('click', () => {
+        if (!btnToCard5.classList.contains('disabled-btn')) {
+            showCard(5);
+        }
+    });
 
     btnRestart.addEventListener('click', () => {
         // Reset gifts
@@ -46,7 +52,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // Disable next button
         btnToCard4.classList.add('disabled-btn');
         btnToCard4.setAttribute('disabled', 'true');
+        btnToCard5.classList.add('disabled-btn');
+        btnToCard5.setAttribute('disabled', 'true');
         openedGifts.clear();
+        resetMemoryGame();
         
         // Go to Card 1
         showCard(1);
@@ -214,7 +223,107 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // ==========================================================================
-    // 5. INTERACTIVE CANVAS FIREWORKS SYSTEM (CARD 4)
+    // 4.5 MEMORY MATCH GAME (CARD 4)
+    // ==========================================================================
+    const memoryGrid = document.getElementById('memory-game');
+    const gamePhotos = ['photo2.jpg', 'photo3.jpg', 'photo4.jpg', 'photo5.jpg'];
+    let cardsArray = [...gamePhotos, ...gamePhotos];
+    let firstCard = null;
+    let secondCard = null;
+    let lockBoard = false;
+    let matchesFound = 0;
+
+    function resetMemoryGame() {
+        memoryGrid.innerHTML = '';
+        cardsArray.sort(() => 0.5 - Math.random());
+        firstCard = null;
+        secondCard = null;
+        lockBoard = false;
+        matchesFound = 0;
+        
+        cardsArray.forEach((photo) => {
+            const cardEl = document.createElement('div');
+            cardEl.classList.add('memory-card');
+            cardEl.dataset.icon = photo;
+            
+            cardEl.innerHTML = `
+                <div class="memory-card-inner">
+                    <div class="memory-card-front">
+                        <img src="${photo}" alt="Memory" class="memory-card-img">
+                    </div>
+                    <div class="memory-card-back"></div>
+                </div>
+            `;
+            
+            cardEl.addEventListener('click', flipCard);
+            memoryGrid.appendChild(cardEl);
+        });
+    }
+
+    function flipCard() {
+        if (lockBoard) return;
+        if (this === firstCard) return;
+
+        this.classList.add('flipped');
+
+        if (!firstCard) {
+            firstCard = this;
+            return;
+        }
+
+        secondCard = this;
+        checkForMatch();
+    }
+
+    function checkForMatch() {
+        let isMatch = firstCard.dataset.icon === secondCard.dataset.icon;
+
+        if (isMatch) {
+            disableCards();
+            matchesFound++;
+            if (matchesFound === gamePhotos.length) {
+                // Game Won! Enable next button
+                setTimeout(() => {
+                    btnToCard5.classList.remove('disabled-btn');
+                    btnToCard5.removeAttribute('disabled');
+                    triggerConfettiFromGift(btnToCard5);
+                }, 500);
+            }
+        } else {
+            unflipCards();
+        }
+    }
+
+    function disableCards() {
+        firstCard.classList.add('matched');
+        secondCard.classList.add('matched');
+        firstCard.removeEventListener('click', flipCard);
+        secondCard.removeEventListener('click', flipCard);
+        resetBoard();
+    }
+
+    function unflipCards() {
+        lockBoard = true;
+        setTimeout(() => {
+            firstCard.classList.remove('flipped');
+            secondCard.classList.remove('flipped');
+            resetBoard();
+        }, 1000);
+    }
+
+    function resetBoard() {
+        [firstCard, secondCard] = [null, null];
+        lockBoard = false;
+    }
+
+    // Initialize game
+    if (memoryGrid) {
+        resetMemoryGame();
+    }
+
+
+    // ==========================================================================
+    // 5. INTERACTIVE CANVAS FIREWORKS SYSTEM (CARD 5)
     // ==========================================================================
     const canvas = document.getElementById('fireworks-canvas');
     const ctx = canvas.getContext('2d');
