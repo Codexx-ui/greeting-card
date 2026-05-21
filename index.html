@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="el">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Χρόνια Πολλά Κωνσταντίνα! ✦ Διαδραστική Κάρτα Ευχών</title>
+    <meta name="description"
+        content="Μια πανέμορφη, premium διαδραστική κάρτα ευχών με φωτογραφίες, παιχνίδια και πυροτεχνήματα για τη γιορτή της Κωνσταντίνας.">
+
+    <!-- Google Fonts: Outfit (modern & sleek) and Playfair Display (elegant serif) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
+
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <!-- Ambient background music (Optional / Royalty-free soft celebratory piano) -->
+    <audio id="bg-music" loop preload="auto">
+        <source src="https://assets.mixkit.co/music/preview/mixkit-beautiful-dream-dreamy-piano-and-strings-1215.mp3"
+            type="audio/mp3">
+    </audio>
+
+    <!-- Floating Background Particles Canvas -->
+    <canvas id="ambient-particles"></canvas>
+
+    <!-- Global Music Toggle -->
+    <button id="music-toggle" class="music-btn" aria-label="Ενεργοποίηση Μουσικής">
+        <span class="music-icon">🎵</span>
+        <span class="music-text">Μουσική</span>
+    </button>
+
+    <!-- Main Container for Cards -->
+    <main id="app-container">
+
+        <!-- ================= CARD 1: ELEGANT COVER ================= -->
+        <section id="card-1" class="card active">
+            <div class="card-glow"></div>
+            <div class="card-content">
+                <div class="badge animate-fade-in">21 Μαΐου ✦ Κωνσταντίνου & Ελένης</div>
+                <h1 class="main-title">
+                    <span class="light-text">Χρόνια Πολλά</span>
+                    <span class="gradient-text">Κωνσταντίνα!</span>
+                </h1>
+                <p class="subtitle animate-fade-in-delayed">
+                    Μια ξεχωριστή, διαδραστική κάρτα ευχών φτιαγμένη με αγάπη ειδικά για τη γιορτή σου.
+                </p>
+                <div class="action-wrapper">
+                    <button id="btn-to-card-2" class="btn btn-primary pulse-effect">
+                        <span>Άνοιξε την Κάρτα</span>
+                        <span class="btn-arrow">✦</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= CARD 2: GALLERY & MESSAGE ================= -->
+        <section id="card-2" class="card">
+            <div class="card-glow"></div>
+            <div class="card-content wide-layout">
+                <h2 class="card-title">✨ Όμορφες Στιγμές</h2>
+
+                <div class="gallery-grid">
+                    <!-- Photo Card Container (Optimized for user's own photo) -->
+                    <div class="photo-card" id="user-photo-container">
+                        <div class="photo-inner">
+                            <!-- Real image container loaded directly -->
+                            <img id="user-uploaded-photo" src="photo.jpg" class="uploaded-image" alt="Κωνσταντίνα">
+                        </div>
+                    </div>
+
+                    <!-- Heartfelt Message Box -->
+                    <div class="message-box">
+                        <div class="message-quote">
+                            «Υπάρχουν άνθρωποι που κάνουν τον κόσμο πιο φωτεινό απλά και μόνο επειδή υπάρχουν σε αυτόν.»
+                        </div>
+                        <p class="message-text">
+                            «Χρόνια πολλά BUBUUU μο, Σου εύχομαι ολόψυχα κάθε σου μέρα να
+                            είναι πλημμυρισμένη από αγάπη, υγεία και όμορφες εκπλήξεις. Είμαι τυχερός που σε έχω πλάι
+                            μου. Να χαίρεσαι την γιορτή σου!» </p>
+                    </div>
+                </div>
+
+                <div class="action-wrapper">
+                    <button id="btn-to-card-3" class="btn btn-secondary">
+                        <span>Δες τις Ευχές</span>
+                        <span class="btn-arrow">✦</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= CARD 3: INTERACTIVE WISHES ================= -->
+        <section id="card-3" class="card">
+            <div class="card-glow"></div>
+            <div class="card-content">
+                <h2 class="card-title">🎁 Διάλεξε ένα Δώρο...</h2>
+                <p class="card-subtitle">Κάνε κλικ στα δώρα για να αποκαλύψεις τις ευχές που κρύβουν!</p>
+
+                <div class="gifts-container">
+                    <!-- Gift 1 -->
+                    <div class="gift-box" id="gift-1" role="button" tabindex="0" aria-label="Άνοιξε το πρώτο δώρο">
+                        <div class="gift-lid"></div>
+                        <div class="gift-body">
+                            <div class="gift-ribbon-v"></div>
+                            <div class="gift-ribbon-h"></div>
+                            <div class="gift-bow"></div>
+                        </div>
+                        <div class="gift-sparkles"></div>
+                        <div class="wish-reveal">
+                            <div class="wish-icon">💖</div>
+                            <h3>Υγεία & Αγάπη</h3>
+                            <p>Wabba μου , εύχομαι η ζωή σου να είναι γεμάτη υγεία, απεριόριστη χαρά και πολυ Μπουτς.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Gift 2 -->
+                    <div class="gift-box" id="gift-2" role="button" tabindex="0" aria-label="Άνοιξε το δεύτερο δώρο">
+                        <div class="gift-lid"></div>
+                        <div class="gift-body">
+                            <div class="gift-ribbon-v"></div>
+                            <div class="gift-ribbon-h"></div>
+                            <div class="gift-bow"></div>
+                        </div>
+                        <div class="gift-sparkles"></div>
+                        <div class="wish-reveal">
+                            <div class="wish-icon">🌟</div>
+                            <h3>Χαμόγελα & Επιτυχία</h3>
+                            <p>Κάθε μέρα να σου φέρνει νέα χαμόγελα, επιτυχίες και ανθρώπους που σε στηρίζουν και μενα
+                                να σου μιλαω Πορτογαλικα.</p>
+                        </div>
+                    </div>
+
+                    <!-- Gift 3 -->
+                    <div class="gift-box" id="gift-3" role="button" tabindex="0" aria-label="Άνοιξε το τρίτο δώρο">
+                        <div class="gift-lid"></div>
+                        <div class="gift-body">
+                            <div class="gift-ribbon-v"></div>
+                            <div class="gift-ribbon-h"></div>
+                            <div class="gift-bow"></div>
+                        </div>
+                        <div class="gift-sparkles"></div>
+                        <div class="wish-reveal">
+                            <div class="wish-icon">🚀</div>
+                            <h3>Όνειρα & Έμπνευση</h3>
+                            <p>Να είσαι πάντα γεμάτη ενέργεια, έμπνευση και να κυνηγάς όλα σου τα όνειρα. Να μη σταματάς
+                                ποτέ να λάμπεις! Χρόνια Πολλά Μπουμπου.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-wrapper">
+                    <!-- Enabled/Visible after at least one gift is clicked -->
+                    <button id="btn-to-card-4" class="btn btn-primary disabled-btn" disabled>
+                        <span>Συνέχισε στο Φινάλε</span>
+                        <span class="btn-arrow">🎇</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= CARD 4: THE GRAND FINALE ================= -->
+        <section id="card-4" class="card">
+            <!-- Fullscreen Canvas for Fireworks -->
+            <canvas id="fireworks-canvas"></canvas>
+
+            <div class="card-glow"></div>
+
+            <!-- Glassmorphism Congratulatory Panel overlaying the fireworks -->
+            <div class="card-content finale-content">
+                <div class="finale-badge">🎇 Μια Ψηφιακή Αγκαλιά 🎇</div>
+
+                <!-- Floating circular memory photo on final card (photo with cat) -->
+                <div class="finale-photo-wrapper" id="finale-photo-container">
+                    <img id="finale-uploaded-photo" src="photo.jpg" class="finale-uploaded-image" alt="Κωνσταντίνα">
+                </div>
+
+                <h2 class="finale-title animate-bounce">
+                    <span class="gradient-text gold-purple">Χρόνια Πολλά,</span>
+                    <span class="big-name gold-gradient">Κωνσταντίνα!</span>
+                </h2>
+                <p class="finale-subtitle">
+                    Κάνε κλικ οπουδήποτε στην οθόνη για να πυροδοτήσεις δικά σου πυροτεχνήματα!
+                </p>
+
+                <div class="finale-wishes-summary">
+                    <p>«Με όλη μου την αγάπη, σου εύχομαι χρόνια πολλά, δημιουργικά και τρισευτυχισμένα!»</p>
+                    <div class="action-wrapper">
+                        <button id="btn-restart" class="btn btn-outline">
+                            <span>Ξανά από την αρχή</span>
+                            <span class="btn-arrow">↺</span>
+                        </button>
+                    </div>
+                </div>
+        </section>
+
+    </main>
+
+    <!-- Custom Script File -->
+    <script src="script.js"></script>
+</body>
+
+</html>

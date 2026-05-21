@@ -1,0 +1,951 @@
+/* ==========================================================================
+   STYLING SYSTEM: INTERACTIVE GREETING CARD (KONSTANTINA)
+   Aesthetic: Premium Glassmorphism, Velvet Dark Purples, Gold Sparkles & Glows
+   ========================================================================== */
+
+/* --- Design Tokens / Custom Variables --- */
+:root {
+    /* Color Palette */
+    --bg-dark-color: #0b071a;
+    --bg-gradient: radial-gradient(circle at 50% 50%, #1e113a 0%, #0d0822 100%);
+    
+    --primary-gradient: linear-gradient(135deg, #ffd700 0%, #ff8c00 100%);
+    --gold-glow: rgba(255, 215, 0, 0.4);
+    
+    --secondary-gradient: linear-gradient(135deg, #ff4e50 0%, #f9d423 100%);
+    --accent-pink: #ff2d55;
+    
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-highlight: rgba(255, 255, 255, 0.12);
+    
+    --text-primary: #ffffff;
+    --text-secondary: #d1c9e8;
+    --text-muted: #8e83b3;
+
+    /* Fonts */
+    --font-heading: 'Playfair Display', Georgia, serif;
+    --font-body: 'Outfit', sans-serif;
+    
+    /* Layout & Transitions */
+    --card-max-width: 850px;
+    --transition-smooth: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+    --transition-bounce: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* --- Reset & Base Styles --- */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-body);
+    background-color: var(--bg-dark-color);
+    background-image: var(--bg-gradient);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* --- Background Canvases & Utilities --- */
+#ambient-particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+    pointer-events: none; /* Let clicks pass through */
+}
+
+/* Global Container */
+#app-container {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding: 40px 20px;
+    z-index: 2;
+}
+
+/* ==========================================================================
+   GLOBAL COMPONENTS & BUTTONS
+   ========================================================================== */
+
+/* Music Toggle Button (Floating) */
+.music-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 50px;
+    padding: 10px 20px;
+    color: white;
+    cursor: pointer;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: var(--transition-smooth);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.music-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.music-btn.playing {
+    border-color: #ffd700;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+    background: rgba(255, 215, 0, 0.1);
+}
+
+.music-btn.playing .music-icon {
+    animation: music-spin 2s linear infinite;
+}
+
+@keyframes music-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Premium Buttons */
+.btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 16px 36px;
+    border-radius: 50px;
+    font-family: var(--font-body);
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: var(--transition-bounce);
+    outline: none;
+    z-index: 5;
+    border: none;
+}
+
+.btn-primary {
+    background: var(--primary-gradient);
+    color: #0b071a;
+    box-shadow: 0 5px 20px rgba(255, 140, 0, 0.4), 0 0 0 0 var(--gold-glow);
+}
+
+.btn-primary:hover {
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 0 8px 25px rgba(255, 140, 0, 0.6), 0 0 15px 4px var(--gold-glow);
+}
+
+.btn-primary:active {
+    transform: translateY(-1px) scale(0.98);
+}
+
+.btn-secondary {
+    background: var(--secondary-gradient);
+    color: #0b071a;
+    box-shadow: 0 5px 20px rgba(255, 78, 80, 0.3);
+}
+
+.btn-secondary:hover {
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 0 8px 25px rgba(255, 78, 80, 0.5);
+}
+
+.btn-outline {
+    background: transparent;
+    border: 2px solid var(--glass-border);
+    color: white;
+}
+
+.btn-outline:hover {
+    border-color: #ffd700;
+    color: #ffd700;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.2);
+}
+
+/* Disabled button state (for Card 3) */
+.btn.disabled-btn {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-muted);
+    border: 1px solid var(--glass-border);
+    box-shadow: none;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.btn-arrow {
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+}
+
+.btn:hover .btn-arrow {
+    transform: translateX(4px);
+}
+
+/* Pulse animation for the primary button */
+.pulse-effect {
+    animation: button-pulse 2s infinite;
+}
+
+@keyframes button-pulse {
+    0% {
+        box-shadow: 0 5px 20px rgba(255, 140, 0, 0.4), 0 0 0 0 var(--gold-glow);
+    }
+    70% {
+        box-shadow: 0 5px 20px rgba(255, 140, 0, 0.4), 0 0 0 12px rgba(255, 215, 0, 0);
+    }
+    100% {
+        box-shadow: 0 5px 20px rgba(255, 140, 0, 0.4), 0 0 0 0 rgba(255, 215, 0, 0);
+    }
+}
+
+/* ==========================================================================
+   CARD STRUCTURE & SWITCHING
+   ========================================================================= */
+
+.card {
+    position: absolute;
+    width: 95%;
+    max-width: var(--card-max-width);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 24px;
+    padding: 50px 40px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), inset 0 1px 0 var(--glass-highlight);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(30px) scale(0.97);
+    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* Active card state */
+.card.active {
+    position: relative;
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0) scale(1);
+    z-index: 10;
+}
+
+/* Ambient glow inside each card */
+.card-glow {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(142, 83, 179, 0.08) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.card-content {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.action-wrapper {
+    margin-top: 40px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+/* ==========================================================================
+   CARD 1: COVER SPECIFICS
+   ========================================================================== */
+
+.badge {
+    background: rgba(255, 215, 0, 0.1);
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    color: #ffd700;
+    padding: 8px 18px;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 10px rgba(255, 215, 0, 0.05);
+}
+
+.main-title {
+    font-family: var(--font-heading);
+    font-size: 4.2rem;
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.light-text {
+    font-weight: 400;
+    font-style: italic;
+    font-size: 3rem;
+    color: var(--text-secondary);
+}
+
+.gradient-text {
+    background: linear-gradient(to right, #ffffff, #ffd700, #ff8c00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 30px rgba(255, 215, 0, 0.1);
+}
+
+.subtitle {
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+    max-width: 580px;
+    line-height: 1.6;
+    font-weight: 300;
+}
+
+/* Animations for Card 1 */
+.animate-fade-in {
+    animation: fadeInUp 1s ease forwards;
+}
+
+.animate-fade-in-delayed {
+    opacity: 0;
+    animation: fadeInUp 1s ease 0.4s forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ==========================================================================
+   CARD 2: MEMORY GALLERY & MESSAGE
+   ========================================================================== */
+
+.card.wide-layout {
+    max-width: 950px;
+}
+
+.card-title {
+    font-family: var(--font-heading);
+    font-size: 2.2rem;
+    margin-bottom: 35px;
+    color: white;
+    letter-spacing: 0.5px;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 40px;
+    width: 100%;
+    align-items: stretch;
+}
+
+/* Photo Card Frame */
+.photo-card {
+    position: relative;
+    border-radius: 18px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    height: 420px; /* Rigid height to prevent content push/overlap */
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: var(--transition-smooth);
+}
+
+.photo-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(255, 215, 0, 0.3);
+    box-shadow: 0 15px 35px rgba(255, 215, 0, 0.1);
+}
+
+.photo-inner {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding: 20px;
+}
+
+/* Placeholder Styling */
+.photo-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    color: var(--text-muted);
+    padding: 40px 20px;
+}
+
+.placeholder-icon {
+    margin-bottom: 20px;
+    stroke: var(--text-secondary);
+    animation: placeholder-pulse 2s infinite ease-in-out;
+}
+
+@keyframes placeholder-pulse {
+    0% { transform: scale(1); opacity: 0.6; }
+    50% { transform: scale(1.05); opacity: 0.9; }
+    100% { transform: scale(1); opacity: 0.6; }
+}
+
+.placeholder-text {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.placeholder-subtext {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+/* Uploaded Image styling - Card 2 (Top photo focus: Tree & Rabbit) */
+.uploaded-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 15%; /* Crop to focus on the Christmas tree & rabbit photo */
+    border-radius: 12px;
+    transition: var(--transition-smooth);
+}
+
+.uploaded-image.hidden {
+    display: none;
+}
+
+/* Final Card Memory Photo - Card 4 (Bottom photo focus: Konstantina & Cat) */
+.finale-photo-wrapper {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #ffd700;
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.5), inset 0 0 10px rgba(0,0,0,0.5);
+    margin-bottom: 25px;
+    display: inline-block;
+    position: relative;
+    z-index: 10;
+    animation: float-photo 5s infinite ease-in-out;
+}
+
+.finale-photo-wrapper.hidden {
+    display: none !important;
+}
+
+.finale-uploaded-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 85%; /* Crop to focus on Konstantina & Cat photo */
+    border-radius: 50%;
+}
+
+@keyframes float-photo {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-6px) scale(1.03); }
+}
+
+/* Message Box Frame */
+.message-box {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 18px;
+    padding: 40px 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: left;
+}
+
+.message-quote {
+    font-family: var(--font-heading);
+    font-size: 1.3rem;
+    font-style: italic;
+    color: #ffd700;
+    line-height: 1.5;
+    margin-bottom: 25px;
+    position: relative;
+    padding-left: 20px;
+}
+
+.message-quote::before {
+    content: "“";
+    position: absolute;
+    left: -5px;
+    top: -10px;
+    font-size: 3rem;
+    color: rgba(255, 215, 0, 0.2);
+    font-family: Georgia, serif;
+}
+
+.message-text {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 20px;
+    font-weight: 300;
+}
+
+.divider {
+    height: 1px;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0.08), transparent);
+    margin: 20px 0;
+}
+
+.photo-tip {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+/* ==========================================================================
+   CARD 3: INTERACTIVE WISHES (GIFT BOX SYSTEM)
+   ========================================================================== */
+
+.card-subtitle {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    margin-bottom: 40px;
+    font-weight: 300;
+}
+
+/* Gifts Container */
+.gifts-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+/* Premium 3D Gift Box */
+.gift-box {
+    position: relative;
+    height: 300px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--glass-border);
+    border-radius: 18px;
+    cursor: pointer;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: var(--transition-bounce);
+    perspective: 1000px; /* 3D effect container */
+}
+
+/* Ribbon colors customized per box */
+#gift-1 { --gift-color: #ff3366; --gift-glow: rgba(255, 51, 102, 0.3); }
+#gift-2 { --gift-color: #ffd700; --gift-glow: rgba(255, 215, 0, 0.3); }
+#gift-3 { --gift-color: #00ccff; --gift-glow: rgba(0, 204, 255, 0.3); }
+
+/* Hover effects */
+.gift-box:hover:not(.opened) {
+    transform: translateY(-8px) scale(1.02);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--gift-color);
+    box-shadow: 0 15px 35px var(--gift-glow);
+}
+
+.gift-box:hover .gift-lid {
+    transform: translateY(-12px) rotate(-4deg);
+}
+
+.gift-box:hover .gift-bow {
+    transform: scale(1.15) rotate(5deg);
+}
+
+/* Gift Body Components */
+.gift-body {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%);
+    border: 2px solid var(--gift-color);
+    border-radius: 12px;
+    bottom: 80px;
+    z-index: 2;
+    transition: var(--transition-bounce);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.gift-lid {
+    position: absolute;
+    width: 130px;
+    height: 35px;
+    background: linear-gradient(to right, var(--gift-color), #ffffff);
+    border-radius: 6px;
+    bottom: 190px;
+    z-index: 3;
+    transition: var(--transition-bounce);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Ribbon & Bow drawing */
+.gift-ribbon-v {
+    position: absolute;
+    width: 24px;
+    height: 100%;
+    background: var(--gift-color);
+    left: 50%;
+    transform: translateX(-50%);
+    top: 0;
+}
+
+.gift-ribbon-h {
+    position: absolute;
+    height: 24px;
+    width: 100%;
+    background: var(--gift-color);
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+}
+
+.gift-bow {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background: var(--gift-color);
+    border-radius: 50%;
+    bottom: 215px;
+    z-index: 4;
+    transition: var(--transition-bounce);
+}
+
+.gift-bow::before, .gift-bow::after {
+    content: '';
+    position: absolute;
+    width: 38px;
+    height: 38px;
+    background: var(--gift-color);
+    border-radius: 50% 50% 0 50%;
+    top: -15px;
+    left: -20px;
+    transform: rotate(-15deg);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.gift-bow::after {
+    border-radius: 50% 50% 50% 0;
+    left: auto;
+    right: -20px;
+    transform: rotate(15deg);
+}
+
+/* sparkles ambient for gifts */
+.gift-sparkles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, var(--gift-color) 0%, transparent 70%);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1;
+    transition: opacity 0.5s ease;
+}
+
+.gift-box:hover .gift-sparkles {
+    opacity: 0.15;
+}
+
+/* Opened Reveal Box styling */
+.wish-reveal {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    padding: 30px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    opacity: 0;
+    transform: scale(0.85); /* Smooth initial scale down */
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    background: radial-gradient(circle at center, rgba(20, 12, 40, 0.98) 0%, rgba(10, 6, 22, 1) 100%);
+    border-radius: 18px;
+    border: 1px solid var(--gift-color);
+    z-index: 10;
+    pointer-events: none;
+}
+
+.wish-icon {
+    font-size: 2.5rem;
+    margin-bottom: 12px;
+    animation: icon-bounce 2s infinite ease-in-out;
+}
+
+@keyframes icon-bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+.wish-reveal h3 {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+    color: var(--gift-color);
+}
+
+.wish-reveal p {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    font-weight: 300;
+}
+
+/* Opened class dynamics (Applied by JS) */
+.gift-box.opened {
+    border-color: var(--gift-color);
+    box-shadow: 0 10px 30px var(--gift-glow);
+}
+
+.gift-box.opened .gift-body,
+.gift-box.opened .gift-lid,
+.gift-box.opened .gift-bow {
+    opacity: 0;
+    transform: scale(0.6) translateY(20px);
+    pointer-events: none;
+    transition: all 0.4s ease;
+}
+
+.gift-box.opened .wish-reveal {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+}
+
+/* ==========================================================================
+   CARD 4: THE GRAND FINALE (FIREWORKS INTERACTIVE CANVAS)
+   ========================================================================== */
+
+#card-4 {
+    min-height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    padding: 40px 0;
+}
+
+/* Fireworks canvas behind card contents */
+#fireworks-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    border-radius: 24px;
+    background: transparent;
+    cursor: crosshair;
+}
+
+.finale-content {
+    background: rgba(13, 8, 34, 0.7);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 24px;
+    padding: 50px 40px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 1px 0 var(--glass-highlight);
+    max-width: 600px;
+    z-index: 5;
+    position: relative;
+    pointer-events: auto; /* Ensure clicks fall through except on this panel */
+    animation: float-panel 6s infinite ease-in-out;
+}
+
+@keyframes float-panel {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+.finale-badge {
+    background: linear-gradient(to right, rgba(255,215,0,0.15), rgba(255,78,80,0.15));
+    border: 1px solid rgba(255,215,0,0.25);
+    padding: 8px 24px;
+    border-radius: 50px;
+    color: #ffd700;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    margin-bottom: 25px;
+}
+
+.finale-title {
+    font-family: var(--font-heading);
+    font-size: 2.8rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.big-name {
+    font-size: 3.8rem;
+    font-weight: 800;
+}
+
+.gold-purple {
+    background: linear-gradient(to right, #ffffff, #d1c9e8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.gold-gradient {
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 2px 10px rgba(255, 215, 0, 0.2));
+}
+
+.finale-subtitle {
+    font-size: 1.15rem;
+    color: var(--text-secondary);
+    margin-bottom: 25px;
+    font-weight: 300;
+}
+
+.finale-wishes-summary {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 14px;
+    padding: 20px 25px;
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 30px;
+    font-weight: 300;
+}
+
+.animate-bounce {
+    animation: mini-bounce 3s infinite ease-in-out;
+}
+
+@keyframes mini-bounce {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-5px) scale(1.02); }
+}
+
+/* ==========================================================================
+   RESPONSIVENESS & MEDIA QUERIES
+   ========================================================================== */
+
+@media (max-width: 850px) {
+    .main-title {
+        font-size: 3.2rem;
+    }
+    .light-text {
+        font-size: 2.4rem;
+    }
+    
+    .gallery-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .photo-card {
+        height: 320px; /* Fixed height on tablet/mobile to prevent overlapping */
+    }
+    
+    .gifts-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .gift-box {
+        height: 250px;
+    }
+    
+    .gift-body { bottom: 60px; }
+    .gift-lid { bottom: 170px; }
+    .gift-bow { bottom: 195px; }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+    
+    .card {
+        padding: 30px 20px;
+        border-radius: 18px;
+    }
+    
+    .main-title {
+        font-size: 2.6rem;
+    }
+    .light-text {
+        font-size: 2rem;
+    }
+    
+    .card-title {
+        font-size: 1.8rem;
+    }
+    
+    .big-name {
+        font-size: 3rem;
+    }
+    
+    .music-btn {
+        top: auto;
+        bottom: 20px;
+        right: 20px;
+    }
+}
